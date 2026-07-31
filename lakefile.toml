@@ -1,0 +1,39 @@
+name = "hex-berlekamp"
+defaultTargets = ["HexBerlekamp", "HexBerlekampTests"]
+
+leanOptions = [
+  { name = "doc.verso", value = true },
+  { name = "doc.verso.suggestions", value = false },
+]
+
+[[require]]
+name = "HexPolyFp"
+git = "https://github.com/leanprover/hex-poly-fp.git"
+rev = "963efabfbd17064105e4fd593d5a9136ae23af61"
+
+[[require]]
+name = "HexMatrix"
+git = "https://github.com/leanprover/hex-matrix.git"
+rev = "d45bf749d6283726b8df43b5be9e6dde350666d6"
+
+[[require]]
+name = "HexRowReduce"
+git = "https://github.com/leanprover/hex-row-reduce.git"
+rev = "a5b4db02cadc7a1e60e2ae7e085cb6facf415ee0"
+
+[[require]]
+name = "HexGFqRing"
+git = "https://github.com/leanprover/hex-gfq-ring.git"
+rev = "28e155fd9dcdb304e7ad7b95696c7535549a4e7f"
+
+[[require]]
+name = "HexBasic"
+git = "https://github.com/leanprover/hex-basic.git"
+rev = "5354a7153ade8a60effaf6431bda7af22cc3410f"
+
+[[lean_lib]]
+name = "HexBerlekamp"
+
+[[lean_lib]]
+name = "HexBerlekampTests"
+globs = ["HexBerlekamp.FactorTacticTests"]
