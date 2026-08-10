@@ -28,9 +28,41 @@ library.
 
 ## Factorization
 
-`Berlekamp.berlekampFactor` computes the fixed space once and applies
-its basis vectors to the current factor list. A split replaces one
-factor by exact complementary factors, preserving the product.
+`Berlekamp.berlekampFactor` has one selection point and two branches.
+
+The default branch computes the fixed space once and applies its basis
+vectors to the current factor list. A split replaces one factor by exact
+complementary factors, preserving the product.
+
+The other branch extracts a completely split input by its roots. A
+square-free polynomial over `F_p` is a product of distinct monic linear
+factors exactly when it has `deg f` roots in `F_p`, so enumerating the
+roots and emitting `X - r` for each is a complete factorization. The
+scan over the canonical residue list is its own certificate: the result
+is used only when the scan finds `deg f` roots, and that length test is
+what proves the reconstruction `∏ (X - r_i) = f`. No separate
+complete-splitting predicate is computed and no Boolean is trusted
+without a check.
+
+The branch is selected from the polynomial alone, never from a
+recognized input family. `Berlekamp.rootScanBudget` admits the scan on
+two tests, both read off the degree and the field size alone.
+
+`deg f ≤ p` is necessary: `F_p` has `p` elements, so a scan of a
+higher-degree input can never find `deg f` distinct roots and is never
+started.
+
+`25 · p ≤ (deg f)^2` keeps the scan cheap against the work it would
+replace: the scan costs `p · deg f` modular multiplications while the
+fixed-space matrix costs about `(deg f)^3`. An input that passes both
+tests, pays for a scan, and then falls back to the kernel branch loses a
+small fraction of the work it was going to do anyway.
+
+Together the two tests select `5 √p ≤ deg f ≤ p`.
+
+The linear factors, their pairwise coprimality, and the reconstruction
+theorem live in `LinearFactors.lean`, shared with the `X^p - X` product
+identity behind Rabin's test.
 
 The result records:
 
@@ -46,6 +78,29 @@ returned from a square-free input are irreducible.
 Distinct-degree factorization is provided separately. It partitions a
 square-free polynomial into products of irreducible factors of a common
 degree, using repeated Frobenius powers and greatest common divisors.
+
+## Degree patterns
+
+The *degree pattern* of a monic square-free polynomial is the multiset
+of degrees of its irreducible factors. It is obtained from the same
+Frobenius powers and gcds as distinct-degree factorization, without
+splitting any equal-degree product: a degree-`d` product of degree `m`
+records `m / d` factors of degree `d`.
+
+A partial pattern already bounds the factor count from both sides.
+After degree `d` is separated, every factor left in a residual of
+degree `m` has degree at least `d`, so the count lies between
+`separated + 1` and `separated + m / d`. A caller that only wants to
+know whether the count is at most some target is therefore answered as
+soon as the factors already separated reach that target, however much
+of the polynomial is left. The loop also stops when the residual is a
+unit, and when the residual is too small to be a product of two factors
+of degree at least `d` and is therefore irreducible; so it stops at the
+largest factor degree rather than at the degree of the input.
+
+Degree patterns are a prediction surface with no certificate content.
+Callers that need factors use `berlekampFactor`; callers that need the
+separated degree products use `distinctDegreeFactor`.
 
 ## Rabin irreducibility certificates
 
