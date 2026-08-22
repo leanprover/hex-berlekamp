@@ -9,27 +9,27 @@ leanOptions = [
 [[require]]
 name = "HexPolyFp"
 git = "https://github.com/leanprover/hex-poly-fp.git"
-rev = "63d11e9652020e83629808977bff618e99d21234"
+rev = "3d2cc1c30b0e17dfec35858e9d5fa8d75e1f241b"
 
 [[require]]
 name = "HexMatrix"
 git = "https://github.com/leanprover/hex-matrix.git"
-rev = "e76a18ae921d8d8907c8ea37235a0ca5b94698cd"
+rev = "e5483ea2d5b666618a54d0ea50bcbe6ba3608d39"
 
 [[require]]
 name = "HexRowReduce"
 git = "https://github.com/leanprover/hex-row-reduce.git"
-rev = "65ca599bf2cde1d16ac493b1efb84a1bfd36f105"
+rev = "75648463d1a8253bf38405dc6c1c78851d3cee49"
 
 [[require]]
 name = "HexGFqRing"
 git = "https://github.com/leanprover/hex-gfq-ring.git"
-rev = "56dd5a199ee4a63710f68260eb82bc4c2aade9f7"
+rev = "4b4002ff17eabd8e8c559f55d81aa701985697bf"
 
 [[require]]
 name = "HexBasic"
 git = "https://github.com/leanprover/hex-basic.git"
-rev = "365881fb205210e8d27c5eb011f7ddb3fe020373"
+rev = "591c146eeee0ef301a110cd33c19cc0cf1e07352"
 
 [[lean_lib]]
 name = "HexBerlekamp"

@@ -22,13 +22,6 @@ namespace Hex
 
 namespace Berlekamp
 
-/-- `Bounds 2` for the `FpPoly 2`-specialized pow-chain witness checkers below.
-Previously this was supplied implicitly by a private instance in
-`HexPolyFp.SquareFree` that leaked through typeclass resolution under the
-pre-module import semantics; the module system hides private instances, so the
-`p = 2` checkers declare it in this module. -/
-instance boundsTwo : ZMod64.Bounds 2 := ⟨by decide, by decide⟩
-
 variable {p : Nat} [ZMod64.Bounds p]
 
 /-- `X^(p^k) - X` reduced modulo `f`. -/
@@ -186,6 +179,7 @@ Kernel-reducible pow-chain check for small closed polynomials. It checks the
 same mathematical witnesses as `checkPowChain`, but compares against the
 structural Frobenius evaluator so `decide` can reduce concrete certificates.
 -/
+@[expose]
 def checkPowChainLinear (f : FpPoly p) (hmonic : DensePoly.Monic f)
     (cert : SamePrimeIrreducibilityCertificate p) : Bool :=
   cert.powChain.size == cert.n + 1 &&
@@ -233,7 +227,13 @@ def checkIrreducibilityCertificate (f : FpPoly p) (hmonic : DensePoly.Monic f)
 Kernel-reducible Rabin certificate checker. This is intended for small
 record-literal polynomials where the theorem input
 `rabinTest f hmonic = true` should be discharged by `decide`.
+
+`@[expose]` because that is the whole point: without an exposed body, `decide`
+in a downstream `module` file gets stuck on the unreduced application, and the
+only way to discharge the check is a hand-written `simp` unfolding, which is
+what this definition exists to avoid.
 -/
+@[expose]
 def checkIrreducibilityCertificateLinear (f : FpPoly p) (hmonic : DensePoly.Monic f)
     (cert : IrreducibilityCertificate) : Bool :=
   match cert.toAmbient? p with
@@ -1109,15 +1109,7 @@ theorem checkPowChainLinearIncrementalQuotientWitnesses_of_steps
   intro k hk
   exact hsteps k (List.mem_range.mp hk)
 
-private theorem primeTwo : Hex.Nat.Prime 2 := by
-  refine ⟨by decide, ?_⟩
-  intro m hm
-  have hmle : m ≤ 2 := Nat.le_of_dvd (by decide : 0 < 2) hm
-  have hcases : m = 0 ∨ m = 1 ∨ m = 2 := by omega
-  rcases hcases with rfl | rfl | rfl
-  · simp at hm
-  · exact Or.inl rfl
-  · exact Or.inr rfl
+private theorem primeTwo : Hex.Nat.Prime 2 := by decide
 
 private theorem powModMonicLinear_two_eq_of_quotientWitness
     (f prev curr quot : FpPoly 2) (hmonic : DensePoly.Monic f)
