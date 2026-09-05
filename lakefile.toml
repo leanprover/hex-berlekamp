@@ -9,27 +9,42 @@ leanOptions = [
 [[require]]
 name = "HexPolyFp"
 git = "https://github.com/leanprover/hex-poly-fp.git"
-rev = "1ca7698307ed776c90e1cd796527d432913bd518"
+rev = "da25459d8ebb26693edfcc70a9217fa6a5c1a1eb"
 
 [[require]]
 name = "HexMatrix"
 git = "https://github.com/leanprover/hex-matrix.git"
-rev = "c3d18a6f58c263a7d56c3eb30e240b423d1ffdd6"
+rev = "25cfbbd8a689eb782fad408c46a9c1796dd943b2"
 
 [[require]]
 name = "HexRowReduce"
 git = "https://github.com/leanprover/hex-row-reduce.git"
-rev = "3b2ab9b0dd2c0382dd1f94ca5f0e74363d0a19ca"
+rev = "967216591082d290bc3f9e1b7405effd910bdef9"
 
 [[require]]
 name = "HexGFqRing"
 git = "https://github.com/leanprover/hex-gfq-ring.git"
-rev = "cabf56d523b6a6c52d567470430a48b995aca4fd"
+rev = "39a0d7414c3eaa1c5718f63212c620782fa5bd4f"
 
 [[require]]
 name = "HexBasic"
 git = "https://github.com/leanprover/hex-basic.git"
-rev = "0ec35366ca67d3f4d1189cc4c9714805c5c437ec"
+rev = "da8a864cd17ccca780d8c76af403e88585bc4734"
+
+[[require]]
+name = "HexArith"
+git = "https://github.com/leanprover/hex-arith.git"
+rev = "ea246536c442464a68210ecce973eb7708968f59"
+
+[[require]]
+name = "HexPoly"
+git = "https://github.com/leanprover/hex-poly.git"
+rev = "bf67a5243d68c909bcd059a89fd9d3f1c54ba7d8"
+
+[[require]]
+name = "HexModArith"
+git = "https://github.com/leanprover/hex-mod-arith.git"
+rev = "67c1559800bc1f62622165d3fe5d6d346661539d"
 
 [[lean_lib]]
 name = "HexBerlekamp"
