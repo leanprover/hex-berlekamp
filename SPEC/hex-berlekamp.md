@@ -138,6 +138,32 @@ The emitted term contains:
 `hex-berlekamp-mathlib` adds the same syntax for
 `Polynomial (ZMod p)`.
 
+## Fast-arithmetic adoption
+
+The Fp production plan is audited in repeated Frobenius reductions, the
+distinct-degree gcd chain, and Rabin powers. Fast multiplication reaches these
+consumers through the proved compiled `FpPoly.powModMonic` dispatcher, while
+the shared division/gcd screen keeps the current Euclidean gcd. Certificate
+shapes and checker theorems do not change.
+
+The complete Rabin operation benchmark compares the public test with the same
+test using the retained `FpPoly.powModMonicAux` schoolbook loop. Three warm
+outer trials on `chungus2`, Lean `4.34.0-rc2`, over `F_5` give:
+
+| input parameter | retained power | public Rabin path |
+|---:|---:|---:|
+| 8 | 171.472 µs | 127.475 µs |
+| 16 | 791.780 µs | 563.754 µs |
+| 32 | 7.452 ms | 2.823 ms |
+| 64 | 53.634 ms | 29.177 ms |
+
+All hashes agree. The production modular-power dispatcher keeps its tiny-input
+schoolbook branch and selects fast multiplication from modulus size 18; Rabin
+therefore gains without replacing its Euclidean gcd chain. Distinct-degree
+factorization inherits the same Frobenius dispatch and retained gcd decision.
+Reproduce the end-to-end screen with
+`lake exe hexberlekamp_bench compare Hex.BerlekampBench.runRabinSchoolbookChecksum Hex.BerlekampBench.runRabinTestChecksum --outer-trials 3`.
+
 ## Mathematical companion
 
 `hex-berlekamp-mathlib` uses the ring equivalence
